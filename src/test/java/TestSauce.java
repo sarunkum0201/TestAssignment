@@ -26,7 +26,7 @@ public class TestSauce {
     @Parameters({"url"})
     public void beforeTest(String url) {
         options = new ChromeOptions();
-        options.addArguments("--headless");
+//        options.addArguments("--headless");
         driver = new ChromeDriver(options);
         System.out.println("Launched browser");
         driver.get(url);
@@ -87,6 +87,17 @@ public class TestSauce {
             String modifiedText = customElement.getText();
             System.out.println("Override test - " + modifiedText);
         }
+    }
+
+    @Test(dataProvider = "positive-data-provider")
+    public void testTotalPrice(String uname, String pass) {
+        loginPage.login(uname, pass);
+        Assert.assertTrue(productsPage.isAppLogo());
+        System.out.println("Sauce valid login test gets success");
+        List<String> inventoryItemPrices = productsPage.getInventoryItemPrices();
+        System.out.println(inventoryItemPrices);
+        double totalPrice = productsPage.getTotalPrice(inventoryItemPrices);
+        System.out.println("Total price - " + totalPrice);
     }
 
     @AfterMethod

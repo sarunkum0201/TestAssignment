@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ProductsPage {
@@ -39,6 +40,9 @@ public class ProductsPage {
 
     @FindBy(className = "inventory_item_name")
     List<WebElement> inventoryItemNames;
+
+    @FindBy(className = "inventory_item_price")
+    List<WebElement> inventoryItemPrices;
 
     public ProductsPage(WebDriver driver) {
         this.driver = driver;
@@ -82,5 +86,21 @@ public class ProductsPage {
 
     public List<WebElement> getInventoryItemNames() {
         return inventoryItemNames;
+    }
+
+    public List<String> getInventoryItemPrices() {
+        List<String> itemPrices = new LinkedList<>();
+        for (int i = 0; i < inventoryItemNames.size(); i++) {
+            itemPrices.add(inventoryItemPrices.get(i).getText().substring(1));
+        }
+        return itemPrices;
+    }
+
+    public double getTotalPrice(List<String> itemPrices) {
+        double totalPrice = 0;
+        for (int i = 0; i < itemPrices.size(); i++) {
+            totalPrice = totalPrice + Double.parseDouble(itemPrices.get(i));
+        }
+        return totalPrice;
     }
 }
